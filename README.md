@@ -1,6 +1,6 @@
 # SILOGISTIK
 
-This project is created as an individual assignment for the subjects of Architecture and Programming and Enterprise Application. SILOGISTIK is a web-based logistics management app.
+This project is created as an individual assignment for the Architecture and Programming for Enterprise Application coursework. SILOGISTIK is a web-based logistics management app.
 
 ## Features
 - Add product 
