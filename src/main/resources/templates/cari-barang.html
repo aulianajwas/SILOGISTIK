@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: dt}" th:remove="tag"></object>
+  <title>View Gudang</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="container">
+        <div class="text-center pt-5">
+            <h2>Cari Barang</h2>
+            <form th:action="@{/gudang/cari-barang}" method="get">
+              <div class="input-group mb-3">
+              <select th:name="sku" class="form-control">
+                <option th:each="barang : ${listBarang}" th:value="${barang.sku}" th:text="${barang.merkBarang}" th:selected="${barang.sku == selectedSku}"></option>
+              </select>
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Cari</button>
+            </div>
+          </div>
+          </form>
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Nama Gudang</th>
+                <th>Alamat Gudang</th>
+                <th>Stok</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="gudang, nomor: ${listGudang}">
+                <td th:text="${nomor.index + 1}"></td>
+                <td>
+                  <a th:href="@{'/gudang/' + ${gudang.idGudang}}">
+                    <span th:text="${gudang.namaGudang}">Link Text</span>
+                  </a>
+                </td>
+                <td th:text="${gudang.alamatGudang}"></td>
+                <td>
+                  <span th:each="gudangBarang : ${listGudangBarang}">
+                      <span th:if="${gudangBarang.gudang.idGudang == gudang.idGudang}">
+                          <span th:text="${gudangBarang.stok}"></span>
+                      </span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+</body>
+ 
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: dt}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: dp}" th:remove="tag"></object>
+  <title>Buat Permintaan Pengiriman</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="container mt-5">
+      <div class="card">
+          <h2 class="card-header d-flex justify-content-center">
+              Buat Permintaan Pengiriman
+          </h2>
+          <div class="card-body">
+            <form th:action="@{/permintaan-pengiriman/tambah}" th:object="${permintaanPengirimanDTO}" method="POST">
+            <table class="table table-borderless">
+              <tbody>
+                  <tr>
+                      <td>
+                        <label>Nama karyawan:</label>
+                        <select  class="form-control" th:field="*{karyawan}" required>
+                          <option th:each="karyawan : ${listKaryawan}" th:value="${karyawan.idKaryawan}" th:text="${karyawan.namaKaryawan}"></option>
+                        </select>
+                      </td>
+                      <td>
+                        <label for="datePicker">Tanggal Pengiriman:</label>
+                        <input type="date" class="form-control" id="datePicker" name="selectedDate" placeholder="dd/MM/yyyy" th:field="*{tanggalPengiriman}" required>
+                      </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Nama Penerima:</label>
+                      <input type="text" class="form-control" th:field="*{namaPenerima}" required>
+                    </td>
+                    <td>
+                      Jenis Layanan:
+                      <select required class="form-control" th:field="*{jenisLayanan}" aria-required="true">
+                        <option value="1">Same Day</option>
+                        <option value="2">Kilat</option>
+                        <option value="3">Reguler</option>
+                        <option value="4">Hemat</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Alamat Penerima:</label>
+                      <input type="text" class="form-control" th:field="*{alamatPenerima}" required>
+                    </td>
+                    <td>
+                      <label>Biaya Pengiriman:</label>
+                      <input type="number" class="form-control" th:field="*{biayaPengiriman}" required>
+                    </td>
+                  </tr>
+              </tbody>
+          </table>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" type="submit" name="addRow" style="text-align:right">+ Tambah Barang</button>
+         </div>
+         <table class="table" id="tabelBarang" >
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Barang</th>
+              <th>Kuantitas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="permintaanPengirimanBarang, iterationStatus : *{listPermintaanPengirimanBarang}">
+              <td th:text="${iterationStatus.count}"></td>
+              <td>
+                <select required th:field="*{listPermintaanPengirimanBarang[__${iterationStatus.index}__].barang.sku}" class="form-control">
+                  <div th:each="barangExisting : ${listBarang}">
+                    <option th:value="${barangExisting.sku}" th:text="${barangExisting.merkBarang}"></option>
+                  </div>
+                </select>
+              </td>
+              <td>
+                <input class="form-control" type="number" th:field="*{listPermintaanPengirimanBarang[__${iterationStatus.index}__].kuantitasPengiriman}" />
+            </tr>
+          </tbody> 
+        </table> 
+        <div class="text-center mt-4">
+          <a  class="btn btn-danger btn-md" href="/permintaan-pengiriman">Batal</a>
+          <button  class="btn btn-primary" type="submit" name="simpanPermintaanPengiriman">Simpan</button>
+        </div>
+        </form>
+          </div>
+        </div>
+  </div>
+</body>
+</html>

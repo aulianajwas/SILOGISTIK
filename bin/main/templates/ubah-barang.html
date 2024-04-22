@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: dt}" th:remove="tag"></object>
+  <title>Ubah Barang</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="card m-4 p-4">
+        <div class="justify-content-center">
+            <h1 class="card-header d-flex justify-content-center">
+                Ubah Barang
+            </h1>
+        <div class="card-body">
+            <br>
+            <form th:action="@{/barang/{idBarang}/ubah}" th:object="${barangDTO}" method="POST"> 
+              SKU: <br>
+              <input class="form-control" type="text" th:field="*{sku}" th:value="${barangDTO.sku}" readonly="true"/>
+              <br><br>
+
+              Merk Barang: <br>
+              <input required class="form-control" type="text" th:field="*{merkBarang}" />
+              <br><br>
+
+              Tipe Barang: <br>
+                  <select required class="form-control" th:field="*{tipeBarang}" readonly="true">
+                    <option value="1" th:selected="${barangDTO.tipeBarang == 1}">Elektronik</option>
+                    <option value="2" th:selected="${barangDTO.tipeBarang == 2}">Pakaian & Aksesoris</option>
+                    <option value="3" th:selected="${barangDTO.tipeBarang == 3}">Makanan dan Minuman</option>
+                    <option value="4" th:selected="${barangDTO.tipeBarang == 4}">Kosmetik</option>
+                    <option value="5" th:selected="${barangDTO.tipeBarang == 5}">Perlengkapan Rumah</option>
+                </select>
+                  </select>
+              <br><br>
+
+              Harga: <br>
+              <input required class="form-control" type="number" th:field="*{hargaBarang}"/>
+              <br><br>
+              <div class="text-center mt-4">
+                <a  class="btn btn-danger btn-md" href="/barang">Batal</a>
+                <button  class="btn btn-primary" type="submit" name="simpanBarang">Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>

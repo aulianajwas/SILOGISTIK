@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: dt}" th:remove="tag"></object>
+  <title>View Barang</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="container mt-5">
+      <div class="card">
+          <h2 class="card-header d-flex justify-content-between">
+              Detail Barang
+              <a class="btn btn-primary" th:href="@{/barang/{idBarang}/ubah(idBarang=${barang.sku})}">+ Ubah Barang</a>
+          </h2>
+          <div class="card-body">
+              <table class="table table-borderless">
+                  <tbody>
+                      <tr>
+                          <td>Merk :</td>
+                          <td th:text="${barang.merkBarang}"></td>
+                      </tr>
+                      <tr>
+                          <td>SKU: </td>
+                          <td th:text="${barang.sku}"></td>
+                      </tr>
+                      <tr>
+                        <td>Tipe Barang: </td>
+                        <td th:text=
+                        "${barang.tipeBarang == 1 ? 'Elektronik' : 
+                        (barang.tipeBarang == 2 ? 'Pakaian & Aksesoris' :
+                        (barang.tipeBarang == 3 ? 'Makanan dan Minuman' :
+                        (barang.tipeBarang == 4 ? 'Kosmetik' :
+                        (barang.tipeBarang == 5 ? 'Perlengkapan Rumah' : ''))))}"></td>
+                    </tr>
+                    <tr>
+                        <td>Total Stok: </td>
+                        <td th:text="${totalStok}"></td>
+                    <tr>
+                        <td>Harga: </td>
+                        <td th:text="${barang.hargaBarang}"></td>
+                    </tr>
+                      </tbody>
+                </table>
+                    <table class="table table-bordered">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>#</th>
+                          <th>Nama Gudang</th>
+                          <th>Alamat Gudang</th>
+                          <th>Stok</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="gudang, nomor: ${listGudang}">
+                          <td th:text="${nomor.index + 1}"></td>
+                          <td>
+                            <a th:href="@{'/gudang/' + ${gudang.idGudang}}">
+                              <span th:text="${gudang.namaGudang}">Link Text</span>
+                            </a>
+                          </td>
+                          <td th:text="${gudang.alamatGudang}"></td>
+                          <td>
+                            <span th:each="gudangBarang : ${listGudangBarang}">
+                                <span th:if="${gudangBarang.gudang.idGudang == gudang.idGudang}">
+                                    <span th:text="${gudangBarang.stok}"></span>
+                                </span>
+                            </span>
+                        </td>
+                        </tr>
+                      </tbody>
+                    </table>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <a type="button" class="btn btn-secondary btn-md" href="/barang">Kembali</a>
+        </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: dt}" th:remove="tag"></object>
+  <title>View Permintaan Pengiriman</title>
+  <style>
+    .custom-rounded {
+      border-radius: 10px;
+      padding: 5px 10px; 
+    }
+  </style>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="container mt-5">
+      <div class="card">
+          <h2 class="card-header d-flex justify-content-between">
+              Detail Permintaan Pengiriman
+              <span th:if="${!permintaanPengiriman.isCancelled}">
+                <a class="btn btn-danger" th:href="@{/permintaan-pengiriman/{idPermintaanPengiriman}/cancel(idPermintaanPengiriman=${permintaanPengiriman.idPengiriman})}">Cancel Permintaan</a>
+            </span>
+            <span th:unless="${!permintaanPengiriman.isCancelled}" class="bg-danger text-white custom-rounded small">
+                Telah Dibatalkan
+            </span>
+          </h2>
+          <div class="card-body">
+              <table class="table table-borderless">
+                  <tbody>
+                    <tr>
+                        <td>No. Permintaan Pengiriman :</td>
+                        <td th:text="${permintaanPengiriman.nomorPengiriman}"></td>
+                    </tr>
+                    <tr>
+                        <td>Waktu Permintaan: </td>
+                        <td th:text="${permintaanPengiriman.waktuPermintaan}"></td>
+                    </tr>
+                    <tr>
+                        <td>Karyawan Bertugas: </td>
+                        <td th:text="${permintaanPengiriman.karyawan.namaKaryawan}"></td>
+                    <tr>
+                        <td>Waktu Pengiriman: </td>
+                        <td th:text="${permintaanPengiriman.tanggalPengiriman}"></td>
+                    </tr>
+                    <tr>
+                        <td>Nama Penerima: </td>
+                        <td th:text="${permintaanPengiriman.namaPenerima}"></td>
+                    </tr>
+                    <tr>
+                        <td>Alamat Penerima: </td>
+                        <td th:text="${permintaanPengiriman.alamatPenerima}"></td>
+                    </tr>
+                    <tr>
+                        <td>Jenis Layanan: </td>
+                        <td th:text="${permintaanPengiriman.jenisLayanan}"></td>
+                    </tr>
+                    <tr>
+                        <td>Biaya Pengiriman: </td>
+                        <td th:text="${permintaanPengiriman.biayaPengiriman}"></td>
+                    </tr>
+                      </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>SKU</th>
+                        <th>Merk</th>
+                        <th>Kuantitas Pesanan</th>
+                        <th>Total Harga</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="barang, nomor: ${permintaanPengiriman.listPermintaanPengirimanBarang}">
+                        <td th:text="${nomor.index + 1}"></td>
+                        <td>
+                            <a th:href="@{'/barang/' + ${barang.barang.sku}}">
+                              <span th:text="${barang.barang.sku}">Link Text</span>
+                            </a>
+                          </td>
+                        <td th:text="${barang.barang.merkBarang}"></td>
+                        <td th:text="${barang.kuantitasPengiriman}"></td>
+                        <td th:text="${totalHarga}"></td>
+                    </tr>
+                    </tbody>
+                </table> 
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <a type="button" class="btn btn-secondary btn-md" href="/permintaan-pengiriman">Kembali</a>
+        </div>
+  </div>
+</body>
+</html>

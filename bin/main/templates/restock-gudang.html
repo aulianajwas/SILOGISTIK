@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: dt}" th:remove="tag"></object>
+  <title>Restock Gudang</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="container mt-5">
+      <div class="card">
+          <h1 class="card-header d-flex justify-content-center">
+              Restock Gudang
+          </h1>
+          <div class="card-body">
+              <table class="table table-borderless">
+                  <tbody>
+                      <tr>
+                          <td>Nama Gudang:</td>
+                          <td th:text="${gudangDTO.namaGudang}"></td>
+                      </tr>
+                      <tr>
+                          <td>Alamat Gudang: </td>
+                          <td th:text="${gudangDTO.alamatGudang}"></td>
+                      </tr>
+                      </tbody>
+                </table>
+                
+                <form th:action="@{/gudang/{idGudang}/restock-barang(idGudang=${gudangDTO.idGudang})}" th:object="${gudangDTO}" method="POST">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary" type="submit" name="addRow" style="text-align:right">+ Tambah Barang</button>
+                 </div>
+                <table class="table" id="tabelBarang" >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Barang</th>
+                      <th>Kuantitas</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="gudangBarang, iterationStatus : *{listGudangBarang}">
+                      <td th:text="${iterationStatus.count}"></td>
+                      <td>
+                        <select required th:field="*{listGudangBarang[__${iterationStatus.index}__].barang.sku}" class="form-control">
+                          <div th:each="barangExisting : ${listBarang}">
+                            <option th:value="${barangExisting.sku}" th:text="${barangExisting.merkBarang}"></option>
+                          </div>
+                        </select>
+                      </td>
+                      <td>
+                        <input class="form-control" type="text" th:field="*{listGudangBarang[__${iterationStatus.index}__].stok}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table> 
+                <div class="text-center mt-4">
+            <a  class="btn btn-danger btn-md" href="/gudang">Batal</a>
+            <button  class="btn btn-primary" type="submit" name="simpanBarang">Simpan</button>
+        </div>
+              </form>
+          </div>
+        </div>
+  </div>
+</body>
+</html>
